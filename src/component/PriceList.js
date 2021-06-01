@@ -408,68 +408,6 @@ class List extends React.Component {
     this.handleMax()
   }
 
-  async SellBinance() {
-    console.log('rrrrrrrrr')
-    const crypto = require('crypto');
-
-    var base_url= "https://fapi.binance.com"
-    var endpoint= "/fapi/v1/order"
-    var quantity=0.001
-    var dataQueryString= "symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity="+String(quantity)+"&price=38000&recvWindow=59999&timestamp="+Date.now();
-
-    var keys = {
-      "akey" : 'OKqHSnXkuyEXEOOcJnA6NwpuAUaWCt9ZkCuLmpaOEQuWdhoW16v7gT54vmUFAf3b',
-      "skey" : 'hbWzT9auRiTkmhnFY7j6k5z33UaRJA1iqyEv3uvyPwcRqjCAQa8SKXbdcGPtrvZX'
-    }
-
-    var signature= crypto.createHmac('sha256',keys['skey']).update(dataQueryString).digest('hex');
-    console.log('yyyyyyyyyy',signature,dataQueryString)
-
-    var url1 = base_url + endpoint + '?' + dataQueryString + '&signature=' + signature;
-
-    console.log('ssssssssss',url1)
-    let config1 = {
-      headers: { 'X-MBX-APIKEY': window.localStorage.getItem('BinanceApiKey') }
-    };
-
-    await axios.post(url1,null,config1)
-    .then((response) => {
-      console.log('buyyyyyy',response)
-    })
-    .catch((error) => {
-      console.log('erroppppppp',error)
-    })
-  }
-
-  async BuyBinance() {
-
-    const crypto = require('crypto');
-
-    var base_url= "https://fapi.binance.com"
-    var endpoint= "/fapi/v1/order"
-
-    var dataQueryString= "symbol=BTCUSDT&side=BUY&type=LIMIT&timeInForce=GTC&quantity=0.001&price=37100&recvWindow=59999&timestamp="+Date.now();
-
-    var keys = {
-      "akey" : 'OKqHSnXkuyEXEOOcJnA6NwpuAUaWCt9ZkCuLmpaOEQuWdhoW16v7gT54vmUFAf3b',
-      "skey" : 'hbWzT9auRiTkmhnFY7j6k5z33UaRJA1iqyEv3uvyPwcRqjCAQa8SKXbdcGPtrvZX'
-    }
-
-    var signature= crypto.createHmac('sha256',keys['skey']).update(dataQueryString).digest('hex');
-    var url1 = base_url + endpoint + '?' + dataQueryString + '&signature=' + signature;
-    let config1 = {
-      headers: { 'X-MBX-APIKEY': 'OKqHSnXkuyEXEOOcJnA6NwpuAUaWCt9ZkCuLmpaOEQuWdhoW16v7gT54vmUFAf3b' }
-    };
-
-    await axios.post(url1,null,config1)
-    .then((response) => {
-      console.log('buyyyyyy',response)
-    })
-    .catch((error) => {
-      console.log('erroppppppp',error)
-    })
-  }
-
 
   render(){
     return (
@@ -483,9 +421,6 @@ class List extends React.Component {
           />
           <button
             onClick={(e) => this.handleClickButton(e)}
-          >send</button>
-          <button
-            onClick={(e) => this.SellBinance(e)}
           >send</button>
         </div>
 
