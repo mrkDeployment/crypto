@@ -258,7 +258,7 @@ class List extends React.Component {
         let binance_quantity=quantity/(this.state.tether*binance_allowed_price)
         let binance_quantity2= binance_quantity.toFixed(binance_quantity_restriction[j])
         let binance_allowed_price2= binance_allowed_price.toFixed(binance_price_restriction[j])
-        var dataQueryString= "symbol="+binance_coin_list[j]+"&side=SELL&type=LIMIT&timeInForce=GTC&quantity="+String(binance_quantity2)+"&price="+String(binance_allowed_price2)+"&recvWindow=59999&timestamp="+Date.now();
+        var dataQueryString= "symbol="+binance_coin_list[j]+"&side=SELL&type=MARKET&quantity="+String(binance_quantity2)+"&recvWindow=59999&timestamp="+Date.now();
         console.log(binance_allowed_price,binance_quantity2)
         var keys = {
           "akey" : String(window.localStorage.getItem('BinanceApiKey')),
@@ -314,39 +314,41 @@ class List extends React.Component {
     
         await axios.post('https://api.nobitex.ir/market/orders/add', sell_data,config)
         .then((response) => {
-			audio.play(); 
-			const crypto = require('crypto');
-			var base_url= "https://fapi.binance.com"
-			var endpoint= "/fapi/v1/order"
-			let binance_allowed_price = 0.995*this.state[`binance_price${j}`]
-			let binance_quantity=quantity/(this.state.tether*binance_allowed_price)
-			let binance_quantity2= binance_quantity.toFixed(binance_quantity_restriction[j])
-			let binance_allowed_price2= binance_allowed_price.toFixed(binance_price_restriction[j])
-			var dataQueryString= "symbol="+binance_coin_list[j]+"&side=BUY&type=LIMIT&timeInForce=GTC&quantity="+String(binance_quantity2)+"&price="+String(binance_allowed_price2)+"&recvWindow=59999&timestamp="+Date.now();
-			console.log(binance_allowed_price,binance_quantity2)
-			var keys = {
-			  "akey" : String(window.localStorage.getItem('BinanceApiKey')),
-			  "skey" : String(window.localStorage.getItem('BinanceSecretKey'))
-			}
-	
-			// var keys = {
-			//   "akey" : 'OKqHSnXkuyEXEOOcJnA6NwpuAUaWCt9ZkCuLmpaOEQuWdhoW16v7gT54vmUFAf3b',
-			//   "skey" : 'hbWzT9auRiTkmhnFY7j6k5z33UaRJA1iqyEv3uvyPwcRqjCAQa8SKXbdcGPtrvZX'
-			// }
-		
-			var signature= crypto.createHmac('sha256',keys['skey']).update(dataQueryString).digest('hex');
-			var url1 = base_url + endpoint + '?' + dataQueryString + '&signature=' + signature;
-			let config1 = {
-			  headers: { 'X-MBX-APIKEY': keys['akey'] }
-			};
-	
-			axios.post(url1,null,config1)
-			.then((response) => {
-			  console.log('selll',response)
-			})
-			.catch((error) => {
-			  console.log('erroppppppp',error)
-			})
+          const crypto = require('crypto');
+          var base_url= "https://fapi.binance.com"
+          var endpoint= "/fapi/v1/order"
+          let binance_allowed_price = 0.995*this.state[`binance_price${j}`]
+          let binance_quantity=quantity/(this.state.tether*binance_allowed_price)
+          let binance_quantity2= binance_quantity.toFixed(binance_quantity_restriction[j])
+          let binance_allowed_price2= binance_allowed_price.toFixed(binance_price_restriction[j])
+          var dataQueryString= "symbol="+binance_coin_list[j]+"&side=BUY&type=MARKET&quantity="+String(binance_quantity2)+"&recvWindow=59999&timestamp="+Date.now();
+          console.log(binance_allowed_price,binance_quantity2)
+          var keys = {
+            "akey" : String(window.localStorage.getItem('BinanceApiKey')),
+            "skey" : String(window.localStorage.getItem('BinanceSecretKey'))
+          }
+      
+          // var keys = {
+          //   "akey" : 'OKqHSnXkuyEXEOOcJnA6NwpuAUaWCt9ZkCuLmpaOEQuWdhoW16v7gT54vmUFAf3b',
+          //   "skey" : 'hbWzT9auRiTkmhnFY7j6k5z33UaRJA1iqyEv3uvyPwcRqjCAQa8SKXbdcGPtrvZX'
+          // }
+        
+          var signature= crypto.createHmac('sha256',keys['skey']).update(dataQueryString).digest('hex');
+          var url1 = base_url + endpoint + '?' + dataQueryString + '&signature=' + signature;
+          let config1 = {
+            headers: { 'X-MBX-APIKEY': keys['akey'] }
+          };
+          if (response.data.status=="ok"){
+            audio.play();
+            console.log("ssssssssseeeeeeeeeeeeeeeeeeeee")
+            axios.post(url1,null,config1)
+            .then((response) => {
+              console.log('selll',response)
+            })
+            .catch((error) => {
+              console.log('erroppppppp',error)
+            })
+          }
         })
         .catch((error) => {
           console.log('erroppppppp',error)
@@ -414,11 +416,11 @@ class List extends React.Component {
     window.localStorage.setItem('BinanceSecretKey',this.state.BinanceSecretKey)
   }
 
-  handleClickButton2 = () => {
+  handleClickButton4 = () => {
     window.localStorage.setItem('buyPercent',this.state.buyPercent)
   }
 
-  handleClickButton3 = () => {
+  handleClickButton5 = () => {
     window.localStorage.setItem('sellPercent',this.state.sellPercent)
   }
 
